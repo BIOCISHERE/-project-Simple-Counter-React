@@ -10,3 +10,10 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.caja{
+    background: black;
+    margin: 10px;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+}
