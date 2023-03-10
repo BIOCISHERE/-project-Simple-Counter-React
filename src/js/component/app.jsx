@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -9,34 +9,50 @@ import Display from "./display.jsx";
 
 //create your first component
 const App = () => {
-	const [tiempo, setTiempo] = useState({s:0, m:0, h:0});
-	const [intervalo, setIntervalo] = useState();
+	const [tiempo, setTiempo] = useState({u:0, d:0, c:0, um:0, dm:0, cm:0, umm:0}); // u = unidad , d = decena, c = centena, um = unidad de mil, dm = decena de mil, cm = centena de mil , um = unidad de millon
+	const [intervalo, setIntervalo] = useState(); // indica cada cuanto se renderiza(con start se renderiza a 10ms)
 	const [estado, setEstado] = useState(0)
-	// useState = 0, --> no a empezado
-	// useState = 1, --> a empezado
-	// useState = 2, --> esta en pausa
+	//  en estado --> useState = 0, --> no a empezado
+	//  en estado --> useState = 1, --> a empezado
+	//  en estado --> useState = 2, --> esta en pausa
 	
 	const start = () => {
 		run();
 		setEstado(1);
-		setIntervalo(setInterval(run, 1000));
+		setIntervalo(setInterval(run, 10));
 	};
 	useEffect(() => {
 		start()
 	}, [1000])
 
-	var updatedS = tiempo.s, updatedM = tiempo.m, updatedH = tiempo.h;
+	var updatedU = tiempo.u, updatedD = tiempo.d, updatedC = tiempo.c, updatedUm = tiempo.um, updatedDm = tiempo.dm, updatedCm = tiempo.cm, updatedUmm = tiempo.umm;
 	const run  = () => {
-		if(updatedM === 60){
-			updatedH++;
-			updatedM = 0;
+		if(updatedCm === 10){
+			updatedUmm++;
+			updatedCm = 0;
 		}
-		if(updatedS === 60){
-			updatedM++;
-			updatedS = 0;
+		if(updatedDm === 10){
+			updatedCm++;
+			updatedDm = 0;
 		}
-		updatedS++;
-		return setTiempo({s: updatedS, m: updatedM, h: updatedH})
+		if(updatedUm === 10){
+			updatedDm++;
+			updatedUm = 0;
+		}
+		if(updatedC === 10){
+			updatedUm++;
+			updatedC = 0;
+		}
+		if(updatedD === 10){
+			updatedC++;
+			updatedD = 0;
+		}
+		if(updatedU === 100){
+			updatedD++;
+			updatedU = 0;
+		}
+		updatedU++;
+		return setTiempo({u: updatedU, d: updatedD, c: updatedC, um: updatedUm, dm: updatedDm, cm: updatedCm, umm: updatedUmm})
 	};
 
 	const stop = () => {
@@ -46,7 +62,7 @@ const App = () => {
 	const reset = () => {
 		clearInterval(intervalo);
 		setEstado(0);
-		setTiempo({s: 0, m: 0, h: 0})
+		setTiempo({u: 0, d: 0, c: 0, um: 0, dm: 0, cm: 0, umm:0})
 	};
 	const resume = () => start();
 
